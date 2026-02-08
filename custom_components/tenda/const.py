@@ -1,0 +1,13 @@
+DOMAIN = "tenda"
+
+CONF_HOST = "host"
+CONF_PASSWORD = "password"
+CONF_SCAN_INTERVAL = "scan_interval"
+
+DEFAULT_SCAN_INTERVAL = 10
+
+CONF_GRACE_PERIOD = "grace_period"
+CONF_KEEP_DEVICES = "keep_devices"
+
+DEFAULT_GRACE_PERIOD = 3
+DEFAULT_KEEP_DEVICES = True

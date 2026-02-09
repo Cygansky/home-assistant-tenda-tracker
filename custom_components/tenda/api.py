@@ -79,9 +79,20 @@ class TendaApi:
         for d in payload:
             mac = d.get("deviceId") or d.get("localhostMac")
             name = d.get("devName") or d.get("localhostName")
+
+            # try several keys for IP address (router payloads vary)
+            ip = (
+                d.get("ip")
+                or d.get("ipAddr")
+                or d.get("ipaddr")
+                or d.get("host")
+                or d.get("localhostIp")
+                or d.get("ip_address")
+            )
+
             if mac and name:
-                devices[mac] = name
-                _LOGGER.debug("Found device: %s -> %s", mac, name)
+                devices[mac] = {"name": name, "ip": ip}
+                _LOGGER.debug("Found device: %s -> %s (ip=%s)", mac, name, ip)
             else:
                 _LOGGER.debug("Skipped device (missing mac or name): %s", d)
 

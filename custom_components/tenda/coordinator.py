@@ -60,17 +60,26 @@ class TendaCoordinator(DataUpdateCoordinator):
             devices = self.storage.data.setdefault("devices", {})
             now = datetime.utcnow().isoformat()
 
-            for mac, name in seen.items():
+            for mac, info in seen.items():
+                if isinstance(info, dict):
+                    name = info.get("name")
+                    ip = info.get("ip")
+                else:
+                    name = info
+                    ip = None
+
                 dev = devices.setdefault(mac, {
                     "name": name,
+                    "ip": ip,
                     "misses": 0,
                     "last_seen": None,
                 })
 
                 dev["name"] = name
+                dev["ip"] = ip
                 dev["misses"] = 0
                 dev["last_seen"] = now
-                _LOGGER.debug("Device %s (%s) - seen, misses=0", mac, name)
+                _LOGGER.debug("Device %s (%s) - seen, misses=0, ip=%s", mac, name, ip)
 
             for mac, dev in list(devices.items()):
                 if mac not in seen:

@@ -51,3 +51,15 @@ class TendaDevice(CoordinatorEntity, TrackerEntity):
         """Return 'home' when connected, otherwise 'not_home'."""
         return "home" if self._connected else "not_home"
 
+    @property
+    def extra_state_attributes(self):
+        """Return additional state attributes for the entity (ip)."""
+        data = self.coordinator.data or {}
+        dev = data.get(self._mac)
+
+        if dev and isinstance(dev, dict):
+            ip = dev.get("ip")
+            return {"ip": ip} if ip is not None else {}
+
+        return {}
+
